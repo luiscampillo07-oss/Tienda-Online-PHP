@@ -1,0 +1,30 @@
+<?php require_once __DIR__ . '/header.phtml'; ?>
+
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6 text-stone-900">Catálogo de Productos</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <?php if (!empty($productos)): ?>
+            <?php foreach ($productos as $producto): ?>
+                <div class="bg-white rounded-lg shadow-md p-6 border border-stone-200 flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-xl font-semibold text-stone-900 mb-2"><?php echo htmlspecialchars($producto['Nombre']); ?></h2>
+                        <p class="text-stone-500 mb-4"><?php echo htmlspecialchars($producto['Descripcion'] ?? ''); ?></p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-amber-600 mb-1"><?php echo number_format($producto['Precio'], 2); ?> €</p>
+                        <p class="text-xs text-stone-400 mb-4">Stock: <?php echo $producto['Stock']; ?></p>
+                        <a href="carrito.php?action=add&id=<?php echo $producto['ID_Producto']; ?>" 
+                           class="block text-center bg-amber-600 hover:bg-amber-500 text-white font-medium py-2 px-4 rounded transition-colors">
+                            Añadir al Carrito
+                        </a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p class="text-stone-400">No hay productos disponibles por el momento.</p>
+        <?php endif; ?>
+    </div>
+</div>
+
+<?php require_once __DIR__ . '/footer.phtml'; ?>

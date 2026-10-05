@@ -1,4 +1,5 @@
 <?php
+<<<<<<< Updated upstream
 
 class db{
     public static function connect(){
@@ -6,3 +7,11 @@ class db{
     }
 }
 ?>
+=======
+$host = "localhost";
+$user = "root";
+$password = "root";
+$database = "tienda_db";
+
+$mysqli = new mysqli($host, $user, $password, $database);
+>>>>>>> Stashed changes
