@@ -1,13 +1,6 @@
 <?php
-session_start();
-
+// Cargar la conexión a la base de datos desde la raíz
 require_once __DIR__ . '/db.php';
-require_once __DIR__ . '/repositories/ProductoRepository.php';
 
-$productoRepo = new ProductoRepository($mysqli);
-$productos = $productoRepo->obtenerTodos();
-
-$title = "TiendaPHP";
-
-require_once __DIR__ . '/views/mainView.phtml';
-
+// Cargar el controlador central desde la carpeta controllers
+require_once __DIR__ . '/controllers/mainController.php';
