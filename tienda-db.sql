@@ -1,6 +1,6 @@
 -- 1. Crear la base de datos
 CREATE DATABASE tienda_db;
-\c tienda_db; -- En PostgreSQL para conectarse a la BD (o 'USE tienda_db;' en MySQL)
+USE tienda_db; -- En PostgreSQL para conectarse a la BD (o 'USE tienda_db;' en MySQL)
 
 -- 2. Tabla CATEGORIA (con relación recursiva para subcategorías)
 CREATE TABLE Categoria (
