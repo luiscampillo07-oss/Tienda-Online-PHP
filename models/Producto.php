@@ -35,3 +35,4 @@ class Producto {
         $this->stock -= $cantidad;
     }
 }
+?>

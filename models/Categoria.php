@@ -25,3 +25,4 @@ class Categoria {
         return $this->idCategoriaPadre;
         }
 }
+?>
