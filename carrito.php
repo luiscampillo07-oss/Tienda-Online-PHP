@@ -3,7 +3,6 @@ session_start();
 
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/repositories/ProductoRepository.php';
->>>>>>> 1635292 (mvc subido)
 
 $productoRepo = new ProductoRepository($mysqli);
 
