@@ -1,18 +1,32 @@
+<?php
+// Asegurar que la sesión esté activa antes de leer $SESSION
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Calcular la cantidad total de unidades en el carrito sin lanzar warnings
+$cantCarrito = 0;
+if (isset($_SESSION['carrito']) && is_array($_SESSION['carrito'])) {
+    $cantCarrito = array_sum(array_column($_SESSION['carrito'], 'cantidad'));
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($title ?? 'Mi Tienda') ?></title>
-    <!-- CSS sencillo con Tailwind CDN para estilos limpios y rápidos -->
+    <title><?= isset($title) ? htmlspecialchars($title) : 'TiendaPHP'; ?></title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-stone-50 text-stone-800 min-h-screen flex flex-col font-sans">
+<body class="bg-stone-50 text-stone-800 font-sans antialiased min-h-screen flex flex-col">
 
-    <header class="bg-white border-b border-stone-200 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="index.php" class="text-2xl font-bold tracking-tight text-stone-900 hover:text-amber-700 transition">
-                TiendaPHP<span class="text-amber-600">.</span>
+    <!-- Navegación -->
+    <header class="bg-white border-b border-stone-200">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            
+            <a href="index.php" class="text-2xl font-bold tracking-tight text-stone-900 flex items-center gap-1">
+                Tienda<span class="text-amber-600">PHP</span>
             </a>
 
             <nav class="flex items-center gap-6 text-sm font-medium">
@@ -20,25 +34,29 @@
                 
                 <a href="carrito.php" class="relative flex items-center gap-1 hover:text-amber-600 transition">
                     <span>Carrito</span>
-                    <?php if (!empty($_SESSION['carrito'])): ?>
-                        <span class="bg-amber-600 text-white text-xs px-2 py-0.5 rounded-full font-bold">
-                            <?= array_sum($_SESSION['carrito']) ?>
+                    <?php if ($cantCarrito > 0): ?>
+                        <span class="bg-amber-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                            <?= $cantCarrito ?>
                         </span>
                     <?php endif; ?>
                 </a>
 
                 <?php if (isset($_SESSION['cliente'])): ?>
-                    <div class="flex items-center gap-3 pl-4 border-l border-stone-200">
-                        <span class="text-stone-600">Hola, <strong><?= htmlspecialchars($_SESSION['cliente']['Nombre']) ?></strong></span>
-                        <a href="logout.php" class="text-xs text-red-600 hover:underline">Salir</a>
-                    </div>
+                    <span class="text-xs text-stone-500">
+                        Hola, <?= htmlspecialchars($_SESSION['cliente']['Nombre']) ?>
+                    </span>
+                    <a href="logout.php" class="text-xs text-red-600 hover:underline">
+                        Cerrar sesión
+                    </a>
                 <?php else: ?>
-                    <a href="login.php" class="bg-stone-900 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-stone-800 transition">
+                    <a href="login.php" class="bg-stone-900 hover:bg-stone-800 text-white px-4 py-2 rounded-lg text-xs font-semibold transition">
                         Iniciar sesión
                     </a>
                 <?php endif; ?>
             </nav>
+
         </div>
     </header>
 
-    <main class="flex-1 max-w-6xl mx-auto w-full px-4 py-8">
+    <!-- Contenedor Principal -->
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow">
