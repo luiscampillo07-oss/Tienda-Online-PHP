@@ -3,15 +3,15 @@ class LineaPedido {
     private int $id;
     private int $idProducto;
     private int $cantidad;
-    private float $precioUnitario;
+    private int $precioUnitario;
 
-    public function __construct(int $id, int $idProducto, int $cantidad, float $precioUnitario) {
+    public function __construct(int $id, int $idProducto, int $cantidad, int $precioUnitario) {
     $this->id = $id;
     $this->idProducto = $idProducto;
     $this->cantidad = $cantidad;
     $this->precioUnitario = $precioUnitario;
     }
-    public function getSubtotal(): float {
+    public function getSubtotal(): int {
         return $this->cantidad * $this->precioUnitario;
     }
     public function getIdProducto(): int { 
@@ -20,7 +20,7 @@ class LineaPedido {
     public function getCantidad(): int { 
         return $this->cantidad; 
         }
-    public function getPrecioUnitario(): float { 
+    public function getPrecioUnitario(): int { 
         return $this->precioUnitario; 
         }
 }

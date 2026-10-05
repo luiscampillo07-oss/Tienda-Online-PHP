@@ -1,24 +1,37 @@
 <?php
 class Producto {
-    public function __construct(
-        private ?int $id = null,
-        private string $nombre = '',
-        private string $descripcion = '',
-        private float $precio = 0.0,
-        private int $stock = 0,
-        private int $idCategoria = 0
-    ) {}
+    private int $id;
+    private string $nombre;
+    private string $descripcion;
+    private int $precio;
+    private int $stock;
+    private int $idCategoria;
 
-    // Getters y Setters
-    public function getId(): ?int { return $this->id; }
-    public function getNombre(): string { return $this->nombre; }
-    public function getPrecio(): float { return $this->precio; }
-    public function getStock(): int { return $this->stock; }
-    
-    public function reducirStock(int $cantidad): void {
-        if ($cantidad > $this->stock) {
-            throw new Exception("Stock insuficiente para el producto {$this->nombre}");
+    public function __construct(int $id, string $nombre, string $descripcion, int $precio, int $stock, int $idCategoria) {
+        $this->id = $id;
+        $this->nombre = $nombre;
+        $this->descripcion = $descripcion;
+        $this->precio = $precio;
+        $this->stock = $stock;
+        $this->idCategoria = $idCategoria;
+    }
+    public function getId(): int { 
+        return $this->id; 
         }
+    public function getNombre(): string { 
+        return $this->nombre; 
+        }
+    public function getPrecio(): int { 
+        return $this->precio; 
+        }
+    public function getStock(): int { 
+        return $this->stock; 
+        }
+    public function getIdCategoria(): int { 
+        return $this->idCategoria; 
+        }
+
+    public function reducirStock(int $cantidad): void {
         $this->stock -= $cantidad;
     }
 }

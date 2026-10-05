@@ -5,9 +5,9 @@ class Pedido {
     private int $idCliente;
     private string $fecha;
     private string $estado;
-    private float $total;
+    private int $total;
    
-    public function __construct(int $id, int $idCliente, string $fecha, string $estado, float $total) {
+    public function __construct(int $id, int $idCliente, string $fecha, string $estado, int $total) {
         $this->id = $id;
         $this->idCliente = $idCliente;
         $this->fecha = $fecha;
@@ -21,7 +21,11 @@ class Pedido {
         $this->total += $linea->getSubtotal();
     }
 
-    public function getTotal(): float { return $this->total; }
-    public function getLineas(): array { return $this->lineas; }
+    public function getTotal(): int { 
+        return $this->total; 
+        }
+    public function getLineas(): array { 
+        return $this->lineas; 
+        }
 }
 ?>
