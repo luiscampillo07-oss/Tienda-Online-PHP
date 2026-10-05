@@ -14,7 +14,7 @@ CREATE TABLE Categoria (
 
 -- 3. Tabla PRODUCTO
 CREATE TABLE Producto (
-    ID_Producto INT AUTO_INCREMENT PRIMARY KEY, -- Usar SERIAL PRIMARY KEY en PostgreSQL
+    ID_Producto INT AUTO_INCREMENT PRIMARY KEY, -- 
     Nombre VARCHAR(150) NOT NULL,
     Descripcion TEXT,
     Precio FLOAT NOT NULL CHECK (Precio >= 0),

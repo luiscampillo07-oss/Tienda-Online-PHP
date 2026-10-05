@@ -1,30 +1,45 @@
 <?php require_once __DIR__ . '/header.phtml'; ?>
 
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6 text-stone-900">Catálogo de Productos</h1>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <?php if (!empty($productos)): ?>
-            <?php foreach ($productos as $producto): ?>
-                <div class="bg-white rounded-lg shadow-md p-6 border border-stone-200 flex flex-col justify-between">
-                    <div>
-                        <h2 class="text-xl font-semibold text-stone-900 mb-2"><?php echo htmlspecialchars($producto['Nombre']); ?></h2>
-                        <p class="text-stone-500 mb-4"><?php echo htmlspecialchars($producto['Descripcion'] ?? ''); ?></p>
-                    </div>
-                    <div>
-                        <p class="text-2xl font-bold text-amber-600 mb-1"><?php echo number_format($producto['Precio'], 2); ?> €</p>
-                        <p class="text-xs text-stone-400 mb-4">Stock: <?php echo $producto['Stock']; ?></p>
-                        <a href="carrito.php?action=add&id=<?php echo $producto['ID_Producto']; ?>" 
-                           class="block text-center bg-amber-600 hover:bg-amber-500 text-white font-medium py-2 px-4 rounded transition-colors">
-                            Añadir al Carrito
-                        </a>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p class="text-stone-400">No hay productos disponibles por el momento.</p>
-        <?php endif; ?>
-    </div>
+<div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Catálogo de Productos</h1>
+    <p class="text-sm text-gray-500">Explora nuestra lista de productos disponibles.</p>
 </div>
+
+<?php if (empty($productos)): ?>
+    <div class="bg-white p-6 border border-gray-200 rounded text-center text-gray-500">
+        No hay productos disponibles en este momento.
+    </div>
+<?php else: ?>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <?php foreach ($productos as $producto): ?>
+            <div class="bg-white border border-gray-200 rounded p-5 flex flex-col justify-between hover:border-gray-300 transition">
+                <div>
+                    <h3 class="font-semibold text-gray-900 text-lg mb-1">
+                        <?= htmlspecialchars($producto['Nombre']) ?>
+                    </h3>
+                    <p class="text-gray-500 text-sm mb-4 line-clamp-2">
+                        <?= htmlspecialchars($producto['Descripcion']) ?>
+                    </p>
+                </div>
+
+                <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+                    <div>
+                        <span class="text-xl font-bold text-gray-900">
+                            <?= number_format($producto['Precio'], 2) ?> €
+                        </span>
+                        <span class="block text-xs text-gray-400">
+                            Stock: <?= $producto['Stock'] ?>
+                        </span>
+                    </div>
+
+                    <a href="index.php?action=add&id=<?= $producto['ID_Producto'] ?>" 
+                       class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-2 rounded transition">
+                        Añadir al carrito
+                    </a>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
 
 <?php require_once __DIR__ . '/footer.phtml'; ?>

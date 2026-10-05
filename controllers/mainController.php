@@ -1,19 +1,25 @@
 <?php
 session_start();
 
-// Cargar la conexión y los repositorios subiendo un nivel a la raíz
+// Cargar la conexión y los repositorios desde la raíz
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../repositories/ClienteRepository.php';
 require_once __DIR__ . '/../repositories/ProductoRepository.php';
 
-// Capturar la acción de la URL
+// Capturar la acción enviada por parámetro URL
 $action = "";
 if (isset($_GET["action"])) {
     $action = $_GET["action"];
 }
 
+// Capturar el ID de producto si existe en la URL
+$productId = null;
+if (isset($_GET["id"])) {
+    $productId = $_GET["id"];
+}
+
 // ------------------------------------------------------------------
-// 1. ACCIÓN: LOGIN
+// 1. ACCIÓN: LOGIN (Procesa el formulario y carga la vista login.phtml)
 // ------------------------------------------------------------------
 if ($action === "login") {
     $error = "";
@@ -50,7 +56,7 @@ if ($action === "login") {
         }
     }
 
-    require_once __DIR__ . '/../views/loginView.phtml';
+    require_once __DIR__ . '/../views/login.phtml';
     exit();
 }
 
@@ -64,7 +70,69 @@ if ($action === "logout") {
 }
 
 // ------------------------------------------------------------------
-// 3. ACCIÓN: PROCESAR PEDIDO
+// 3. ACCIÓN: CARRITO (Añadir, Eliminar, Limpiar y Ver Carrito)
+// ------------------------------------------------------------------
+
+// A) Añadir producto al carrito
+if ($action === "add" && $productId !== null) {
+    $productoRepo = new ProductoRepository($mysqli);
+    $product = $productoRepo->obtenerPorId($productId);
+
+    if ($product) {
+        if (!isset($_SESSION["carrito"])) {
+            $_SESSION["carrito"] = [];
+        }
+
+        $productIdStr = (string)$product["ID_Producto"];
+        if (isset($_SESSION["carrito"][$productIdStr])) {
+            $_SESSION["carrito"][$productIdStr]["cantidad"] += 1;
+        } else {
+            $_SESSION["carrito"][$productIdStr] = [
+                "ID_Producto" => $product["ID_Producto"],
+                "Nombre"      => $product["Nombre"],
+                "Precio"      => $product["Precio"],
+                "cantidad"    => 1
+            ];
+        }
+    }
+    header("Location: index.php?action=verCarrito");
+    exit();
+}
+
+// B) Eliminar o decrementar producto del carrito
+if ($action === "eliminar" && $productId !== null) {
+    $productIdStr = (string)$productId;
+    if (isset($_SESSION["carrito"][$productIdStr])) {
+        if ($_SESSION["carrito"][$productIdStr]["cantidad"] > 1) {
+            $_SESSION["carrito"][$productIdStr]["cantidad"] -= 1;
+        } else {
+            unset($_SESSION["carrito"][$productIdStr]);
+        }
+    }
+    header("Location: index.php?action=verCarrito");
+    exit();
+}
+
+// C) Vaciar el carrito completo
+if ($action === "limpiar") {
+    unset($_SESSION["carrito"]);
+    header("Location: index.php?action=verCarrito");
+    exit();
+}
+
+// D) Vista del Carrito de Compras
+if ($action === "verCarrito") {
+    $itemsCarrito = [];
+    if (isset($_SESSION["carrito"])) {
+        $itemsCarrito = array_values($_SESSION["carrito"]);
+    }
+
+    require_once __DIR__ . '/../views/carrito.phtml';
+    exit();
+}
+
+// ------------------------------------------------------------------
+// 4. ACCIÓN: PROCESAR PEDIDO
 // ------------------------------------------------------------------
 if ($action === "procesarPedido") {
     $error = "";
@@ -78,6 +146,7 @@ if ($action === "procesarPedido") {
         }
 
         if ($total > 0) {
+            unset($_SESSION["carrito"]);
             header("Location: index.php?action=pedidoExitoso");
             exit();
         } else {
@@ -107,7 +176,7 @@ if ($action === "procesarPedido") {
 }
 
 // ------------------------------------------------------------------
-// 4. ACCIÓN: CONFIRMACIÓN DE PEDIDO EXITOSO
+// 5. ACCIÓN: CONFIRMACIÓN DE PEDIDO EXITOSO
 // ------------------------------------------------------------------
 if ($action === "pedidoExitoso") {
     require_once __DIR__ . '/../views/header.phtml';
@@ -127,7 +196,7 @@ if ($action === "pedidoExitoso") {
 }
 
 // ------------------------------------------------------------------
-// 5. ACCIÓN POR DEFECTO: VISTA PRINCIPAL DE PRODUCTOS
+// 6. ACCIÓN POR DEFECTO: VISTA PRINCIPAL DE PRODUCTOS
 // ------------------------------------------------------------------
 $productoRepo = new ProductoRepository($mysqli);
 $productos = $productoRepo->obtenerTodos();
