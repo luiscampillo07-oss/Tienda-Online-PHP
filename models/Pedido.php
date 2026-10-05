@@ -1,15 +1,21 @@
 <?php
 class Pedido {
     private array $lineas = [];
-
-    public function __construct(
-        private ?int $id = null,
-        private int $idCliente = 0,
-        private string $fecha = '',
-        private string $estado = 'Pendiente',
-        private float $total = 0.0
-    ) {}
-
+    private int $id ;
+    private int $idCliente;
+    private string $fecha;
+    private string $estado;
+    private float $total;
+   
+    public function __construct(int $id, int $idCliente, string $fecha, string $estado, float $total) {
+        $this->id = $id;
+        $this->idCliente = $idCliente;
+        $this->fecha = $fecha;
+        $this->estado = $estado;
+        $this->total = $total;
+        $this->linea = $lineas;
+    }
+    
     public function agregarLinea(LineaPedido $linea): void {
         $this->lineas[] = $linea;
         $this->total += $linea->getSubtotal();
