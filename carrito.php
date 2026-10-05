@@ -1,29 +1,22 @@
 <?php
-
 session_start();
 
-// Import repository classes
 require_once "models/Producto.php";
 require_once "repositories/ProductoRepository.php";
 require_once "db.php";
 
-// Initialize product repository
 $productoRepo = new ProductoRepository($mysqli);
 
-// Cart actions
 $action = $_GET["action"] ?? null;
 $productId = $_GET["id"] ?? null;
 
-// Add product to cart
 if ($action === "add" && $productId !== null) {
     $product = $productoRepo->obtenerPorId($productId);
     if ($product) {
-        // Initialize cart if not exists
         if (!isset($_SESSION["carrito"])) {
             $_SESSION["carrito"] = [];
         }
         
-        // Add product to cart or increment quantity if already exists
         $productIdStr = (string)$product["ID_Producto"];
         if (isset($_SESSION["carrito"][$productIdStr])) {
             $_SESSION["carrito"][$productIdStr]["cantidad"] += 1;
@@ -40,7 +33,6 @@ if ($action === "add" && $productId !== null) {
     exit();
 }
 
-// Remove product from cart
 if ($action === "eliminar" && $productId !== null) {
     $productIdStr = (string)$productId;
     if (isset($_SESSION["carrito"][$productIdStr])) {
@@ -54,7 +46,6 @@ if ($action === "eliminar" && $productId !== null) {
     exit();
 }
 
-// Clear cart
 if ($action === "limpiar") {
     unset($_SESSION["carrito"]);
     header("Location: carrito.php");
