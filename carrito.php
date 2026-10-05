@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-<<<<<<< HEAD
-require_once "models/Producto.php";
-require_once "repositories/ProductoRepository.php";
-require_once "db.php";
-=======
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/repositories/ProductoRepository.php';
 >>>>>>> 1635292 (mvc subido)
@@ -15,8 +10,7 @@ $productoRepo = new ProductoRepository($mysqli);
 $action = $_GET["action"] ?? null;
 $productId = $_GET["id"] ?? null;
 
-<<<<<<< HEAD
-=======
+
 // Añadir producto al carrito
 >>>>>>> 1635292 (mvc subido)
 if ($action === "add" && $productId !== null) {
@@ -42,8 +36,7 @@ if ($action === "add" && $productId !== null) {
     exit();
 }
 
-<<<<<<< HEAD
-=======
+
 // Eliminar o decrementar producto
 >>>>>>> 1635292 (mvc subido)
 if ($action === "eliminar" && $productId !== null) {
@@ -59,8 +52,7 @@ if ($action === "eliminar" && $productId !== null) {
     exit();
 }
 
-<<<<<<< HEAD
-=======
+
 // Limpiar carrito entero
 >>>>>>> 1635292 (mvc subido)
 if ($action === "limpiar") {
