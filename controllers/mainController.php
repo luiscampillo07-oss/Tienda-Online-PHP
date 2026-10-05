@@ -19,7 +19,7 @@ if (isset($_GET["id"])) {
 }
 
 // ------------------------------------------------------------------
-// 1. ACCIÓN: LOGIN (Procesa el formulario y carga la vista login.phtml)
+// 1. ACCIÓN: LOGIN
 // ------------------------------------------------------------------
 if ($action === "login") {
     $error = "";
