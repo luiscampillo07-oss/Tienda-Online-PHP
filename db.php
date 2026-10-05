@@ -9,9 +9,5 @@ $database = "tienda_db";
 
 $mysqli = new mysqli($host, $user, $password, $database);
 
-if ($mysqli->connect_error) {
-    die("Fallo la conexión: " . $mysqli->connect_error);
-}
-
 require_once "controllers/mainController.php";
 ?>
